@@ -1,0 +1,876 @@
+Microsoft Windows [Version 10.0.26200.8973]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\chyas>mysql -u root -p
+'mysql' is not recognized as an internal or external command,
+operable program or batch file.
+
+C:\Users\chyas>cd C:\Program Files\MySQL\MySQL Server 8.0\bin
+
+C:\Program Files\MySQL\MySQL Server 8.0\bin>mysql -u root -p
+Enter password: ****
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 8
+Server version: 8.0.46 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2026, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql> CREATE DATABASE transaction;
+Query OK, 1 row affected (0.04 sec)
+
+mysql> USE transactions;
+ERROR 1049 (42000): Unknown database 'transactions'
+mysql> USE transaction;
+Database changed
+mysql> SHOW TABLES;
+Empty set (0.06 sec)
+
+mysql> CREATE TABLE roles(
+    ->     role_id INT PRIMARY KEY,
+    ->     role_name VARCHAR(50)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> CREATE TABLE users(
+    ->     user_id INT PRIMARY KEY,
+    ->     name VARCHAR(50),
+    ->     email VARCHAR(50),
+    ->     role_id INT
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE TABLE departments(
+    ->     dept_id INT PRIMARY KEY,
+    ->     dept_name VARCHAR(50)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> show tables;
++-----------------------+
+| Tables_in_transaction |
++-----------------------+
+| departments           |
+| roles                 |
+| users                 |
++-----------------------+
+3 rows in set (0.01 sec)
+
+mysql> CREATE TABLE employees(
+    ->     emp_id INT PRIMARY KEY,
+    ->     emp_name VARCHAR(50),
+    ->     dept_id INT,
+    ->     manager_id INT,
+    ->     salary DECIMAL(10,2)
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE TABLE customers(
+    ->     customer_id INT PRIMARY KEY,
+    ->     customer_name VARCHAR(50),
+    ->     city VARCHAR(50)
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE TABLE orders(
+    ->     order_id INT PRIMARY KEY,
+    ->     customer_id INT,
+    ->     order_date DATE,
+    ->     total_amount DECIMAL(10,2)
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> DROP DATABASE transaction;
+Query OK, 6 rows affected (0.04 sec)
+
+mysql> CREATE DATABASE transaction;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> USE transaction;
+Database changed
+mysql> DROP DATABASE transaction;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE DATABASE transaction;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> USE transaction;
+Database changed
+mysql> show databses;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'databses' at line 1
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| library            |
+| mysql              |
+| performance_schema |
+| sakila             |
+| studentbd          |
+| sys                |
+| transaction        |
+| world              |
++--------------------+
+9 rows in set (0.01 sec)
+
+mysql> show tables
+    -> ;
+Empty set (0.00 sec)
+
+mysql> CREATE TABLE Departments(
+    ->     DeptID INT PRIMARY KEY,
+    ->     DeptName VARCHAR(50),
+    ->     Location VARCHAR(50)
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE TABLE Employees (
+    ->     EmpID INT PRIMARY KEY,
+    ->     EmpName VARCHAR(50),
+    ->     Designation VARCHAR(50),
+    ->     Salary DECIMAL(10,2),
+    ->     DeptID INT,
+    ->     FOREIGN KEY (DeptID) REFERENCES Departments(DeptID)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> CREATE TABLE Projects (
+    ->     ProjectID INT PRIMARY KEY,
+    ->     ProjectName VARCHAR(100),
+    ->     Budget DECIMAL(12,2),
+    ->     DeptID INT,
+    ->     FOREIGN KEY (DeptID) REFERENCES Departments(DeptID)
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> CREATE TABLE Customers (
+    ->     CustomerID INT PRIMARY KEY,
+    ->     CustomerName VARCHAR(50),
+    ->     City VARCHAR(50),
+    ->     Phone VARCHAR(15)
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE TABLE Products (
+    ->     ProductID INT PRIMARY KEY,
+    ->     ProductName VARCHAR(50),
+    ->     Price DECIMAL(10,2),
+    ->     Stock INT
+    -> );
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE TABLE Orders (
+    ->     OrderID INT PRIMARY KEY,
+    ->     CustomerID INT,
+    ->     OrderDate DATE,
+    ->     FOREIGN KEY (CustomerID) REFERENCES Customers(CustomerID)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> CREATE TABLE Order_Details (
+    ->     OrderID INT,
+    ->     ProductID INT,
+    ->     Quantity INT,
+    ->     PRIMARY KEY (OrderID, ProductID),
+    ->     FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
+    ->     FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+    -> );
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> SHOW TABLES;
++-----------------------+
+| Tables_in_transaction |
++-----------------------+
+| customers             |
+| departments           |
+| employees             |
+| order_details         |
+| orders                |
+| products              |
+| projects              |
++-----------------------+
+7 rows in set (0.00 sec)
+
+mysql> INSERT INTO Departments VALUES
+    -> (1,'CSE','Hyderabad'),
+    -> (2,'ECE','Vijayawada'),
+    -> (3,'EEE','Warangal'),
+    -> (4,'Mechanical','Guntur');
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Employees VALUES
+    -> (101,'Rahul','Manager',80000,1),
+    -> (102,'Priya','Developer',60000,1),
+    -> (103,'Kiran','Analyst',55000,2),
+    -> (104,'Sneha','Technician',45000,3),
+    -> (105,'Anil','Engineer',50000,4);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Projects VALUES
+    -> (201,'AI Chatbot',500000,1),
+    -> (202,'IoT Smart Home',300000,2),
+    -> (203,'Power Grid',700000,3),
+    -> (204,'Bridge Construction',900000,4);
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Customers VALUES
+    -> (301,'Arun','Hyderabad','9876543210'),
+    -> (302,'Bhavana','Vijayawada','9876543211'),
+    -> (303,'Charan','Warangal','9876543212'),
+    -> (304,'Divya','Guntur','9876543213');
+Query OK, 4 rows affected (0.00 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Products VALUES
+    -> (401,'Laptop',55000,20),
+    -> (402,'Mouse',500,100),
+    -> (403,'Keyboard',1200,80),
+    -> (404,'Monitor',12000,30);
+Query OK, 4 rows affected (0.01 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Orders VALUES
+    -> (501,301,'2026-08-01'),
+    -> (502,302,'2026-08-02'),
+    -> (503,303,'2026-08-03'),
+    -> (504,304,'2026-08-04');
+Query OK, 4 rows affected (0.00 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> INSERT INTO Order_Details VALUES
+    -> (501,401,1),
+    -> (501,402,2),
+    -> (502,403,1),
+    -> (503,404,1),
+    -> (504,401,1);
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM Departments;
++--------+------------+------------+
+| DeptID | DeptName   | Location   |
++--------+------------+------------+
+|      1 | CSE        | Hyderabad  |
+|      2 | ECE        | Vijayawada |
+|      3 | EEE        | Warangal   |
+|      4 | Mechanical | Guntur     |
++--------+------------+------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Employees;
++-------+---------+-------------+----------+--------+
+| EmpID | EmpName | Designation | Salary   | DeptID |
++-------+---------+-------------+----------+--------+
+|   101 | Rahul   | Manager     | 80000.00 |      1 |
+|   102 | Priya   | Developer   | 60000.00 |      1 |
+|   103 | Kiran   | Analyst     | 55000.00 |      2 |
+|   104 | Sneha   | Technician  | 45000.00 |      3 |
+|   105 | Anil    | Engineer    | 50000.00 |      4 |
++-------+---------+-------------+----------+--------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Projects;
++-----------+---------------------+-----------+--------+
+| ProjectID | ProjectName         | Budget    | DeptID |
++-----------+---------------------+-----------+--------+
+|       201 | AI Chatbot          | 500000.00 |      1 |
+|       202 | IoT Smart Home      | 300000.00 |      2 |
+|       203 | Power Grid          | 700000.00 |      3 |
+|       204 | Bridge Construction | 900000.00 |      4 |
++-----------+---------------------+-----------+--------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Customers;
++------------+--------------+------------+------------+
+| CustomerID | CustomerName | City       | Phone      |
++------------+--------------+------------+------------+
+|        301 | Arun         | Hyderabad  | 9876543210 |
+|        302 | Bhavana      | Vijayawada | 9876543211 |
+|        303 | Charan       | Warangal   | 9876543212 |
+|        304 | Divya        | Guntur     | 9876543213 |
++------------+--------------+------------+------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Products;
++-----------+-------------+----------+-------+
+| ProductID | ProductName | Price    | Stock |
++-----------+-------------+----------+-------+
+|       401 | Laptop      | 55000.00 |    20 |
+|       402 | Mouse       |   500.00 |   100 |
+|       403 | Keyboard    |  1200.00 |    80 |
+|       404 | Monitor     | 12000.00 |    30 |
++-----------+-------------+----------+-------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Orders;
++---------+------------+------------+
+| OrderID | CustomerID | OrderDate  |
++---------+------------+------------+
+|     501 |        301 | 2026-08-01 |
+|     502 |        302 | 2026-08-02 |
+|     503 |        303 | 2026-08-03 |
+|     504 |        304 | 2026-08-04 |
++---------+------------+------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT * FROM Order_Details;
++---------+-----------+----------+
+| OrderID | ProductID | Quantity |
++---------+-----------+----------+
+|     501 |       401 |        1 |
+|     501 |       402 |        2 |
+|     502 |       403 |        1 |
+|     503 |       404 |        1 |
+|     504 |       401 |        1 |
++---------+-----------+----------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT E.EmpID,
+    ->        E.EmpName,
+    ->        D.DeptName
+    -> FROM Employees E
+    -> INNER JOIN Departments D
+    -> ON E.DeptID = D.DeptID;
++-------+---------+------------+
+| EmpID | EmpName | DeptName   |
++-------+---------+------------+
+|   101 | Rahul   | CSE        |
+|   102 | Priya   | CSE        |
+|   103 | Kiran   | ECE        |
+|   104 | Sneha   | EEE        |
+|   105 | Anil    | Mechanical |
++-------+---------+------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT E.EmpName,
+    ->        P.ProjectName
+    -> FROM Employees E
+    -> INNER JOIN Projects P
+    -> ON E.DeptID = P.DeptID;
++---------+---------------------+
+| EmpName | ProjectName         |
++---------+---------------------+
+| Rahul   | AI Chatbot          |
+| Priya   | AI Chatbot          |
+| Kiran   | IoT Smart Home      |
+| Sneha   | Power Grid          |
+| Anil    | Bridge Construction |
++---------+---------------------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT C.CustomerName,
+    ->        O.OrderID,
+    ->        O.OrderDate
+    -> FROM Customers C
+    -> INNER JOIN Orders O
+    -> ON C.CustomerID = O.CustomerID;
++--------------+---------+------------+
+| CustomerName | OrderID | OrderDate  |
++--------------+---------+------------+
+| Arun         |     501 | 2026-08-01 |
+| Bhavana      |     502 | 2026-08-02 |
+| Charan       |     503 | 2026-08-03 |
+| Divya        |     504 | 2026-08-04 |
++--------------+---------+------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT C.CustomerName,
+    ->        P.ProductName,
+    ->        OD.Quantity
+    -> FROM Customers C
+    -> INNER JOIN Orders O
+    -> ON C.CustomerID = O.CustomerID
+    -> INNER JOIN Order_Details OD
+    -> ON O.OrderID = OD.OrderID
+    -> INNER JOIN Products P
+    -> ON OD.ProductID = P.ProductID;
++--------------+-------------+----------+
+| CustomerName | ProductName | Quantity |
++--------------+-------------+----------+
+| Arun         | Laptop      |        1 |
+| Arun         | Mouse       |        2 |
+| Bhavana      | Keyboard    |        1 |
+| Charan       | Monitor     |        1 |
+| Divya        | Laptop      |        1 |
++--------------+-------------+----------+
+5 rows in set (0.00 sec)
+
+mysql> SELECT P.ProductName,
+    ->        P.Price,
+    ->        OD.Quantity,
+    ->        (P.Price * OD.Quantity) AS TotalAmount
+    -> FROM Products P
+    -> INNER JOIN Order_Details OD
+    -> ON P.ProductID = OD.ProductID;
++-------------+----------+----------+-------------+
+| ProductName | Price    | Quantity | TotalAmount |
++-------------+----------+----------+-------------+
+| Laptop      | 55000.00 |        1 |    55000.00 |
+| Laptop      | 55000.00 |        1 |    55000.00 |
+| Mouse       |   500.00 |        2 |     1000.00 |
+| Keyboard    |  1200.00 |        1 |     1200.00 |
+| Monitor     | 12000.00 |        1 |    12000.00 |
++-------------+----------+----------+-------------+
+5 rows in set (0.00 sec)
+
+mysql>  INSERT INTO Employees
+    -> VALUES (106,'Ramesh','Developer',65000,1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> UPDATE Employees
+    -> SET Salary = Salary * 1.10
+    -> WHERE DeptID = (
+    ->     SELECT DeptID
+    ->     FROM Departments
+    ->     WHERE DeptName='CSE'
+    -> );
+Query OK, 3 rows affected (0.00 sec)
+Rows matched: 3  Changed: 3  Warnings: 0
+
+mysql> DELETE FROM Employees
+    -> WHERE Salary < 30000;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> SELECT * FROM Employees;
++-------+---------+-------------+----------+--------+
+| EmpID | EmpName | Designation | Salary   | DeptID |
++-------+---------+-------------+----------+--------+
+|   101 | Rahul   | Manager     | 88000.00 |      1 |
+|   102 | Priya   | Developer   | 66000.00 |      1 |
+|   103 | Kiran   | Analyst     | 55000.00 |      2 |
+|   104 | Sneha   | Technician  | 45000.00 |      3 |
+|   105 | Anil    | Engineer    | 50000.00 |      4 |
+|   106 | Ramesh  | Developer   | 71500.00 |      1 |
++-------+---------+-------------+----------+--------+
+6 rows in set (0.00 sec)
+
+mysql>
+mysql> SELECT E.EmpName,
+    ->        D.DeptName
+    -> FROM Employees E
+    -> INNER JOIN Departments D
+    -> ON E.DeptID=D.DeptID;
++---------+------------+
+| EmpName | DeptName   |
++---------+------------+
+| Rahul   | CSE        |
+| Priya   | CSE        |
+| Ramesh  | CSE        |
+| Kiran   | ECE        |
+| Sneha   | EEE        |
+| Anil    | Mechanical |
++---------+------------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT E.EmpName,
+    ->        D.DeptName
+    -> FROM Employees E
+    -> INNER JOIN Departments D
+    -> ON E.DeptID=D.DeptID;
++---------+------------+
+| EmpName | DeptName   |
++---------+------------+
+| Rahul   | CSE        |
+| Priya   | CSE        |
+| Ramesh  | CSE        |
+| Kiran   | ECE        |
+| Sneha   | EEE        |
+| Anil    | Mechanical |
++---------+------------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT E.EmpName
+    -> FROM Employees E
+    -> LEFT JOIN Departments D
+    -> ON E.DeptID=D.DeptID
+    -> WHERE D.DeptID IS NULL;
+Empty set (0.00 sec)
+
+mysql> SELECT D.DeptName,
+    ->        E.EmpName
+    -> FROM Departments D
+    -> LEFT JOIN Employees E
+    -> ON D.DeptID=E.DeptID;
++------------+---------+
+| DeptName   | EmpName |
++------------+---------+
+| CSE        | Rahul   |
+| CSE        | Priya   |
+| CSE        | Ramesh  |
+| ECE        | Kiran   |
+| EEE        | Sneha   |
+| Mechanical | Anil    |
++------------+---------+
+6 rows in set (0.00 sec)
+
+mysql> ALTER TABLE Employees
+    -> ADD ManagerID INT;
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> UPDATE Employees SET ManagerID=NULL WHERE EmpID=101;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 1  Changed: 0  Warnings: 0
+
+mysql> UPDATE Employees SET ManagerID=101 WHERE EmpID=102;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE Employees SET ManagerID=101 WHERE EmpID=103;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE Employees SET ManagerID=102 WHERE EmpID=104;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE Employees SET ManagerID=102 WHERE EmpID=105;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE Employees SET ManagerID=101 WHERE EmpID=106;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT E.EmpName Employee,
+    ->        M.EmpName Manager
+    -> FROM Employees E
+    -> LEFT JOIN Employees M
+    -> ON E.ManagerID=M.EmpID;
++----------+---------+
+| Employee | Manager |
++----------+---------+
+| Rahul    | NULL    |
+| Priya    | Rahul   |
+| Kiran    | Rahul   |
+| Sneha    | Priya   |
+| Anil     | Priya   |
+| Ramesh   | Rahul   |
++----------+---------+
+6 rows in set (0.00 sec)
+
+mysql> SELECT COUNT(*) AS TotalEmployees
+    -> FROM Employees;
++----------------+
+| TotalEmployees |
++----------------+
+|              6 |
++----------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT D.DeptName,
+    ->        AVG(E.Salary) AS AverageSalary
+    -> FROM Employees E
+    -> JOIN Departments D
+    -> ON E.DeptID=D.DeptID
+    -> GROUP BY D.DeptName;
++------------+---------------+
+| DeptName   | AverageSalary |
++------------+---------------+
+| CSE        |  75166.666667 |
+| ECE        |  55000.000000 |
+| EEE        |  45000.000000 |
+| Mechanical |  50000.000000 |
++------------+---------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT D.DeptName,
+    ->        AVG(E.Salary) AS AverageSalary
+    -> FROM Employees E
+    -> JOIN Departments D
+    -> ON E.DeptID=D.DeptID
+    -> GROUP BY D.DeptName;
++------------+---------------+
+| DeptName   | AverageSalary |
++------------+---------------+
+| CSE        |  75166.666667 |
+| ECE        |  55000.000000 |
+| EEE        |  45000.000000 |
+| Mechanical |  50000.000000 |
++------------+---------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT D.DeptName,
+    ->        AVG(E.Salary) AS AverageSalary
+    -> FROM Employees E
+    -> JOIN Departments D
+    -> ON E.DeptID=D.DeptID
+    -> GROUP BY D.DeptName
+    -> HAVING AVG(E.Salary)>60000;
++----------+---------------+
+| DeptName | AverageSalary |
++----------+---------------+
+| CSE      |  75166.666667 |
++----------+---------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT MAX(Salary) AS HighestSalary,
+    ->        MIN(Salary) AS LowestSalary
+    -> FROM Employees;
++---------------+--------------+
+| HighestSalary | LowestSalary |
++---------------+--------------+
+|      88000.00 |     45000.00 |
++---------------+--------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT EmpID,
+    ->        EmpName,
+    ->        Salary
+    -> FROM Employees
+    -> WHERE Salary >
+    -> (
+    ->     SELECT AVG(Salary)
+    ->     FROM Employees
+    -> );
++-------+---------+----------+
+| EmpID | EmpName | Salary   |
++-------+---------+----------+
+|   101 | Rahul   | 88000.00 |
+|   102 | Priya   | 66000.00 |
+|   106 | Ramesh  | 71500.00 |
++-------+---------+----------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT *
+    -> FROM Employees
+    -> WHERE DeptID =
+    -> (
+    ->     SELECT DeptID
+    ->     FROM Employees
+    ->     WHERE EmpName='Rahul'
+    -> );
++-------+---------+-------------+----------+--------+-----------+
+| EmpID | EmpName | Designation | Salary   | DeptID | ManagerID |
++-------+---------+-------------+----------+--------+-----------+
+|   101 | Rahul   | Manager     | 88000.00 |      1 |      NULL |
+|   102 | Priya   | Developer   | 66000.00 |      1 |       101 |
+|   106 | Ramesh  | Developer   | 71500.00 |      1 |       101 |
++-------+---------+-------------+----------+--------+-----------+
+3 rows in set (0.00 sec)
+
+mysql> SELECT *
+    -> FROM Employees
+    -> WHERE Salary =
+    -> (
+    ->     SELECT MAX(Salary)
+    ->     FROM Employees
+    -> );
++-------+---------+-------------+----------+--------+-----------+
+| EmpID | EmpName | Designation | Salary   | DeptID | ManagerID |
++-------+---------+-------------+----------+--------+-----------+
+|   101 | Rahul   | Manager     | 88000.00 |      1 |      NULL |
++-------+---------+-------------+----------+--------+-----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT D.DeptName,
+    ->        COUNT(E.EmpID) AS TotalEmployees
+    -> FROM Departments D
+    -> JOIN Employees E
+    -> ON D.DeptID=E.DeptID
+    -> GROUP BY D.DeptName
+    -> HAVING COUNT(E.EmpID)>5;
+Empty set (0.00 sec)
+
+mysql> SELECT Salary
+    -> FROM
+    -> (
+    ->     SELECT Salary,
+    ->            DENSE_RANK() OVER(ORDER BY Salary DESC) AS rnk
+    ->     FROM Employees
+    -> ) t
+    -> WHERE rnk=2;
++----------+
+| Salary   |
++----------+
+| 71500.00 |
++----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT E.EmpID,
+    ->        E.EmpName,
+    ->        E.Salary,
+    ->        D.DeptName
+    -> FROM Employees E
+    -> JOIN Departments D
+    -> ON E.DeptID=D.DeptID
+    -> WHERE E.Salary >
+    -> (
+    ->     SELECT AVG(Salary)
+    ->     FROM Employees
+    ->     WHERE DeptID=E.DeptID
+    -> );
++-------+---------+----------+----------+
+| EmpID | EmpName | Salary   | DeptName |
++-------+---------+----------+----------+
+|   101 | Rahul   | 88000.00 | CSE      |
++-------+---------+----------+----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT *
+    -> FROM Customers
+    -> WHERE CustomerID NOT IN
+    -> (
+    ->     SELECT CustomerID
+    ->     FROM Orders
+    -> );
+Empty set (0.00 sec)
+
+mysql> SELECT *
+    -> FROM Customers
+    -> WHERE CustomerID NOT IN
+    -> (
+    ->     SELECT CustomerID
+    ->     FROM Orders
+    -> );
+Empty set (0.00 sec)
+
+mysql> SELECT P.ProductName,
+    ->        SUM(OD.Quantity) AS TotalSold
+    -> FROM Products P
+    -> JOIN Order_Details OD
+    -> ON P.ProductID=OD.ProductID
+    -> GROUP BY P.ProductName
+    -> ORDER BY TotalSold DESC
+    -> LIMIT 1;
++-------------+-----------+
+| ProductName | TotalSold |
++-------------+-----------+
+| Laptop      |         2 |
++-------------+-----------+
+1 row in set (0.00 sec)
+
+mysql> SELECT DeptName,
+    ->        TotalEmployees
+    -> FROM
+    -> (
+    ->     SELECT D.DeptName,
+    ->            COUNT(E.EmpID) AS TotalEmployees,
+    ->            DENSE_RANK() OVER(ORDER BY COUNT(E.EmpID) DESC) AS rnk
+    ->     FROM Departments D
+    ->     LEFT JOIN Employees E
+    ->     ON D.DeptID=E.DeptID
+    ->     GROUP BY D.DeptName
+    -> ) t
+    -> WHERE rnk=1;
++----------+----------------+
+| DeptName | TotalEmployees |
++----------+----------------+
+| CSE      |              3 |
++----------+----------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT MONTH(O.OrderDate) AS MonthNo,
+    ->        SUM(P.Price * OD.Quantity) AS MonthlySales
+    -> FROM Orders O
+    -> JOIN Order_Details OD
+    -> ON O.OrderID=OD.OrderID
+    -> JOIN Products P
+    -> ON P.ProductID=OD.ProductID
+    -> GROUP BY MONTH(O.OrderDate);
++---------+--------------+
+| MonthNo | MonthlySales |
++---------+--------------+
+|       8 |    124200.00 |
++---------+--------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT MONTH(OrderDate) AS MonthNo,
+    ->        COUNT(*) AS Orders,
+    ->        SUM(COUNT(*)) OVER(ORDER BY MONTH(OrderDate)) AS RunningTotal
+    -> FROM Orders
+    -> GROUP BY MONTH(OrderDate);
++---------+--------+--------------+
+| MonthNo | Orders | RunningTotal |
++---------+--------+--------------+
+|       8 |      4 |            4 |
++---------+--------+--------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT CustomerName,
+    ->        TotalPurchase,
+    ->        DENSE_RANK() OVER(ORDER BY TotalPurchase DESC) AS CustomerRank
+    -> FROM
+    -> (
+    ->     SELECT C.CustomerName,
+    ->            SUM(P.Price*OD.Quantity) AS TotalPurchase
+    ->     FROM Customers C
+    ->     JOIN Orders O
+    ->     ON C.CustomerID=O.CustomerID
+    ->     JOIN Order_Details OD
+    ->     ON O.OrderID=OD.OrderID
+    ->     JOIN Products P
+    ->     ON OD.ProductID=P.ProductID
+    ->     GROUP BY C.CustomerName
+    -> ) t;
++--------------+---------------+--------------+
+| CustomerName | TotalPurchase | CustomerRank |
++--------------+---------------+--------------+
+| Arun         |      56000.00 |            1 |
+| Divya        |      55000.00 |            2 |
+| Charan       |      12000.00 |            3 |
+| Bhavana      |       1200.00 |            4 |
++--------------+---------------+--------------+
+4 rows in set (0.00 sec)
+
+mysql> SELECT E.EmpName AS Employee,
+    ->        M.EmpName AS Manager,
+    ->        E.Salary,
+    ->        M.Salary AS ManagerSalary
+    -> FROM Employees E
+    -> JOIN Employees M
+    -> ON E.ManagerID=M.EmpID
+    -> WHERE E.Salary > M.Salary;
+Empty set (0.00 sec)
+
+mysql> ALTER TABLE Employees
+    -> ADD Email VARCHAR(100);
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> UPDATE Employees SET Email='rahul@gmail.com' WHERE EmpID=101;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE Employees SET Email='priya@gmail.com' WHERE EmpID=102;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE Employees SET Email='kiran@gmail.com' WHERE EmpID=103;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE Employees SET Email='sneha@gmail.com' WHERE EmpID=104;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE Employees SET Email='anil@gmail.com' WHERE EmpID=105;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE Employees SET Email='rahul@gmail.com' WHERE EmpID=106;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> SELECT Email,
+    ->        COUNT(*) AS DuplicateCount
+    -> FROM Employees
+    -> GROUP BY Email
+    -> HAVING COUNT(*) > 1;
++-----------------+----------------+
+| Email           | DuplicateCount |
++-----------------+----------------+
+| rahul@gmail.com |              2 |
++-----------------+----------------+
+1 row in set (0.00 sec)
+
+mysql>
